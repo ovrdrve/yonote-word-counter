@@ -1,46 +1,59 @@
 chrome.runtime.onMessage.addListener((settings, sender, sendResponse) => {
-  let page_text;
+  let selection = document.getSelection();
   let content_nodes = document.querySelectorAll('[role="textbox"]');
+
+  let page_text;
 
   // Заголовок страницы
   let frame_title = content_nodes[0].textContent;
 
-  // Если разрешен в настройках то добавляем к подсчету
-  if (settings.allow_title) {
-    page_text = frame_title;
-  }
-
-  // Контент страницы
-  let page_blocks = content_nodes[1].childNodes;
-
-  is_h1_content = false;
-  is_h2_content = false;
-  is_h3_content = false;
-
-  page_blocks.forEach((block) => {
-    // Определение принадлежности тега к заголовку определенного уровня
-    if (block.tagName === "H1") {
-      is_h1_content = true;
-      is_h2_content = false;
-      is_h3_content = false;
-    }
-    if (block.tagName === "H2") {
-      is_h2_content = true;
-      is_h3_content = false;
-    }
-    if (block.tagName === "H3") {
-      is_h3_content = true;
+  // Если нет выделенного текста
+  if (selection.isCollapsed) {
+    // Если заголовок разрешен в настройках то добавляем к подсчету
+    if (settings.allow_title) {
+      page_text = frame_title;
     }
 
-    let block_text = getBlockText(block, settings);
-    if (block_text) {
-      if (page_text) {
-        page_text += "\n" + block_text;
+    // Контент страницы
+    let page_blocks = content_nodes[1].childNodes;
+
+    is_h1_content = false;
+    is_h2_content = false;
+    is_h3_content = false;
+
+    page_blocks.forEach((block) => {
+      // Определение принадлежности тега к заголовку определенного уровня
+      if (block.tagName === "H1") {
+        is_h1_content = true;
+        is_h2_content = false;
+        is_h3_content = false;
+      }
+      if (block.tagName === "H2") {
+        is_h2_content = true;
+        is_h3_content = false;
+      }
+      if (block.tagName === "H3") {
+        is_h3_content = true;
+      }
+
+      let block_text = getBlockText(block, settings);
+      if (block_text) {
+        if (page_text) {
+          page_text += "\n" + block_text;
+        } else {
+          page_text = block_text;
+        }
+      }
+    });
+  } else {
+    for (let i = 0; i < selection.rangeCount; i++) {
+      if (page_text != null) {
+        page_text += " " + selection.getRangeAt(i).toString().trim();
       } else {
-        page_text = block_text;
+        page_text = selection.getRangeAt(i).toString().trim();
       }
     }
-  });
+  }
 
   sendResponse({
     title: frame_title != "" ? frame_title : "Untitled",
@@ -190,13 +203,13 @@ chrome.runtime.onMessage.addListener((settings, sender, sendResponse) => {
 
   // Подсчет слов
   function countWords(v) {
-    let regex = `/[${word}\d]+([-'][${word}\d]*)*/g`;
     let word = "";
 
     if (settings.allow_language_eng) word += "a-zA-Z";
     if (settings.allow_language_rus) word += "а-яА-Я";
 
-    const matches = v.match(new RegExp(regex));
+    let regex = `[\d${word}]+([-'][\d${word}]*)*`;
+    const matches = v.match(new RegExp(regex, "g"));
     return matches ? matches.length : 0;
   }
 });
