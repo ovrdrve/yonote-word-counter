@@ -50,7 +50,6 @@ try {
         allow_toggle_h3_title: true,
         allow_toggle_h3_content: false,
         allow_column: true,
-        allow_table: true,
         count_type: "count_words",
         allow_formatting_bold: true,
         allow_formatting_italic: true,

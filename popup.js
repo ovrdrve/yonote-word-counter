@@ -183,35 +183,34 @@ async function debug() {
 async function renderSettings() {
   // Список заголовков для настроек связанных с разрешением подсчета
   let settings_title = [
-    ["allow_title", "Page title"],
-    ["allow_quote", "Quote block"],
-    ["allow_text", "Text block"],
-    ["allow_callout", "Callout block"],
-    ["allow_toggle_h1_title", "Toggle H1 title"],
-    ["allow_toggle_h1_content", "Toggle H1 content"],
-    ["allow_toggle_h2_title", "Toggle H2 title"],
-    ["allow_toggle_h2_content", "Toggle H2 content"],
-    ["allow_toggle_h3_title", "Toggle H3 title"],
-    ["allow_toggle_h3_content", "Toggle H3 content"],
-    ["allow_toggle_title", "Toggle title"],
-    ["allow_toggle_content", "Toggle content"],
+    ["allow_title", "Заголовок страницы"],
+    ["allow_quote", "Блок цитаты"],
+    ["allow_text", "Текстовый блок"],
+    ["allow_callout", "Информационный блок"],
+    ["allow_toggle_h1_title", "Заголовок H1"],
+    ["allow_toggle_h1_content", "Содержимое H1"],
+    ["allow_toggle_h2_title", "Заголовок H2"],
+    ["allow_toggle_h2_content", "Содержимое H2"],
+    ["allow_toggle_h3_title", "Заголовок H3"],
+    ["allow_toggle_h3_content", "Содержимое H3"],
+    ["allow_toggle_title", "Заголовок"],
+    ["allow_toggle_content", "Содержимое заголовка"],
     ["allow_to_do", "To-do list"],
-    ["allow_bulleted_list", "Bulleted list"],
-    ["allow_numbered_list", "Numbered list"],
-    ["allow_column", "Columns"],
-    ["allow_table", "Table"],
-    ["allow_code", "Code block"],
+    ["allow_bulleted_list", "Маркерованный список"],
+    ["allow_numbered_list", "Нумерованный список"],
+    ["allow_column", "Колонки"],
+    ["allow_code", "Блок кода"],
   ];
   let settings_formatting_title = [
-    ["allow_formatting_bold", "Bold"],
-    ["allow_formatting_italic", "Italic"],
-    ["allow_formatting_underline", "Underline"],
-    ["allow_formatting_strike", "Strike"],
-    ["allow_formatting_code", "Code"],
+    ["allow_formatting_bold", "Жирный"],
+    ["allow_formatting_italic", "Курсив"],
+    ["allow_formatting_underline", "Подчеркнутый"],
+    ["allow_formatting_strike", "Зачеркнутый"],
+    ["allow_formatting_code", "Моноширинный"],
   ];
   let settings_language_title = [
-    ["allow_language_eng", "English"],
-    ["allow_language_rus", "Russian"],
+    ["allow_language_eng", "Английский"],
+    ["allow_language_rus", "Русский"],
   ];
 
   chrome.storage.local.get("settings", function (data) {
